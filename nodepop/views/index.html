@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+
+    <ul>
+      <% for (aviso of listaAvisos) { %>
+      <li>
+        <img src="/images/anuncios/<%= aviso.foto %>" alt="<%= aviso.foto %>"><br />
+        articulo : <%= aviso.nombre %> <br />
+        venta : <%= aviso.venta %> <br />
+        precio : <%= aviso.precio %> <br />
+        foto : <%= aviso.foto %> <br />
+        tags : <%= aviso.tags %>
+      </li>
+      <% } %>
+    </ul>
+  </body>
+</html>
