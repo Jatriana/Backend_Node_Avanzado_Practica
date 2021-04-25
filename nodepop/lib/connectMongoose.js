@@ -14,7 +14,7 @@ mongoose.connection.on('error', err => {
   });
 
   
-mongoose.connect('mongodb://localhost/anuncio',{
+mongoose.connect(process.env.MONGODB_CONNECTION_STR,{
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
