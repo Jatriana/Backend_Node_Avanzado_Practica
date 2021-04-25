@@ -8,7 +8,14 @@ La aplicación está desarrollada sobre la versión de Node v14.15.2
 
 Una vez clonado no colocarnos en el raiz del proyecto y ejecutamos ejecutar  ``` npm install ```
 
-Arranca la  aplicación por defecto en el puerto 3000: 
+Arranca la  aplicación por defecto en el puerto 3000:
+
+copiar .env.example  en .env revisar la configuracion
+
+````sh
+cp -i .env.example .env
+````
+
 
 ### inicializar la BBDD 
 
