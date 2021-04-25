@@ -6,17 +6,20 @@
   </head>
   <body>
     <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <p><%=__('Welcome to ')%><%= title %></p>
 
     <ul>
       <% for (aviso of listaAvisos) { %>
       <li>
-        <img src="/images/anuncios/<%= aviso.foto %>" alt="<%= aviso.foto %>"><br />
-        articulo : <%= aviso.nombre %> <br />
-        venta : <%= aviso.venta %> <br />
-        precio : <%= aviso.precio %> <br />
-        foto : <%= aviso.foto %> <br />
-        tags : <%= aviso.tags %>
+        <img
+          src="/images/anuncios/<%= aviso.foto %>"
+          alt="<%= aviso.foto %>"
+        /><br />
+        <%=__('Article')%> : <%= aviso.nombre %> <br />
+        <%=__('Sale')%> : <%= aviso.venta %> <br />
+        <%=__('Price')%> : <%= aviso.precio %> <br />
+        <%=__('Photo')%> : <%= aviso.foto %> <br />
+        <%=__('Tags')%> : <%= aviso.tags %>
       </li>
       <% } %>
     </ul>

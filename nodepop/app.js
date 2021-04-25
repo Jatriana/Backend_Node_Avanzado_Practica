@@ -12,8 +12,10 @@ var app = express();
 // Conectar a Mongodb vía Mongoose
 require('./lib/connectMongoose');
 
-
-
+// i18n.setLocale('es')
+// i18n.__('welcome to nodeApi');
+// //prueba de funcionamiento
+// console.log(i18n.__('welcome to nodeApi'));
 // Cargar el modelo
 require('./models/Anuncio');
 
@@ -32,31 +34,34 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 /**
  * rutas de API
- * 
+ *
  */
- app.use('/api/anuncios', require('./routes/api/anuncios'));
- 
+app.use('/api/anuncios', require('./routes/api/anuncios'));
+
+
+
+// configuro el i18n
+const i18n = require('./lib/i18nConfigure');
+app.use(i18n.init);
+
 /**
  * rutas del website
  */
 
-app.use('prueba',(req,res,next)=>{
+app.use('prueba', (req, res, next) => {
   next();
-})
+});
 
-app.use('/',      require('./routes/index'));
+app.use('/', require('./routes/index'));
 app.use('/users', require('./routes/users'));
 
-
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
-
 // error handler
-app.use(function(err, req, res, next) {
-  
+app.use(function (err, req, res, next) {
   //validacion de error query erronea
 
   if (err.array) {
@@ -66,9 +71,9 @@ app.use(function(err, req, res, next) {
   }
   res.status(err.status || 500);
 
-  if(isAPIRequest(req)){
-    res.json({eror:err.message})
-    return
+  if (isAPIRequest(req)) {
+    res.json({ eror: err.message });
+    return;
   }
   // set locals, only providing error in development
   res.locals.message = err.message;
@@ -78,8 +83,8 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-function isAPIRequest(req){
-  return req.originalUrl.indexOf('/api/')=== 0;
+function isAPIRequest(req) {
+  return req.originalUrl.indexOf('/api/') === 0;
 }
 
 module.exports = app;
