@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var usersRouter = require('./routes/change-locale');
 
 var app = express();
 
@@ -23,7 +23,7 @@ require('./models/Anuncio');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'html');
 app.engine('html', require('ejs').__express);
-
+//se declara una variable local para todas las vistas
 app.locals.title = 'NodeAPI';
 
 app.use(logger('dev'));
@@ -38,8 +38,6 @@ app.use(express.static(path.join(__dirname, 'public')));
  */
 app.use('/api/anuncios', require('./routes/api/anuncios'));
 
-
-
 // configuro el i18n
 const i18n = require('./lib/i18nConfigure');
 app.use(i18n.init);
@@ -53,7 +51,8 @@ app.use('prueba', (req, res, next) => {
 });
 
 app.use('/', require('./routes/index'));
-app.use('/users', require('./routes/users'));
+app.use('/change-locale', require('./routes/change-locale'));
+app.use('/users', require('./routes/change-locale'));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
