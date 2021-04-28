@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const loginController = require('./controllers/loginController');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/change-locale');
@@ -37,6 +38,7 @@ app.use(express.static(path.join(__dirname, 'public')));
  *
  */
 app.use('/api/anuncios', require('./routes/api/anuncios'));
+app.post('/api/loginJWT',   loginController.postJWT);
 
 // configuro el i18n
 const i18n = require('./lib/i18nConfigure');
