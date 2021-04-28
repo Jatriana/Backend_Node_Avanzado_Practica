@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const Usuario = require('../models/Usuario')
 
 
 class LoginController {
@@ -22,17 +23,17 @@ class LoginController {
         return;
       }
   
-      // si el usuario existe y la clave coincide
+     // si el usuario existe y la clave coincide
 
-      // crear un token JWT (firmado)
-    //   jwt.sign({ _id: usuario._id }, process.env.JWT_SECRET, { expiresIn: '2h' }, (err, jwtToken) => {
-    //     if (err) {
-    //       next(err);
-    //       return;
-    //     }
-    //     // devolveselo al cliente
-    //     res.json({ token: jwtToken});
-    //   });
+     // crear un token JWT (firmado)
+      jwt.sign({ _id: usuario._id }, process.env.JWT_SECRET, { expiresIn: '2h' }, (err, jwtToken) => {
+        if (err) {
+          next(err);
+          return;
+        }
+        // devolveselo al cliente
+        res.json({ token: jwtToken});
+      });
       
 
       

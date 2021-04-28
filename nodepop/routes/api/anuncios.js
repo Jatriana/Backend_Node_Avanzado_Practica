@@ -7,6 +7,7 @@ var router = express.Router();
 
 const Anuncio = require("../../models/Anuncio");
 
+
 /*
  * GET /api/auncios
  * metodo de filtar por nombre- ventra -precio(valor , memor igual que, mayor igual que),

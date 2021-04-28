@@ -37,8 +37,8 @@ app.use(express.static(path.join(__dirname, 'public')));
  * rutas de API
  *
  */
+app.post('/api/autenticacion',   loginController.postJWT);
 app.use('/api/anuncios', require('./routes/api/anuncios'));
-app.post('/api/loginJWT',   loginController.postJWT);
 
 // configuro el i18n
 const i18n = require('./lib/i18nConfigure');
