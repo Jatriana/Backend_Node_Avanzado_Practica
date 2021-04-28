@@ -25,7 +25,9 @@ class LoginController {
   
      // si el usuario existe y la clave coincide
 
-     // crear un token JWT (firmado)
+     /** crear un token JWT (firmado)
+      * para generar el tokes se usa metodo sign pasa el usuario, la firma de decodificacion , el tiempo de valides y por ultimo un callback primero el error y luego devuelve un jason con el token
+      * */
       jwt.sign({ _id: usuario._id }, process.env.JWT_SECRET, { expiresIn: '2h' }, (err, jwtToken) => {
         if (err) {
           next(err);

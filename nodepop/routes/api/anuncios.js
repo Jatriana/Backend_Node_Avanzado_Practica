@@ -6,6 +6,7 @@ var router = express.Router();
 //cargar el modelo
 
 const Anuncio = require("../../models/Anuncio");
+const jwtAuth = require("../../lib/jwtAuth")
 
 
 /*
@@ -14,7 +15,7 @@ const Anuncio = require("../../models/Anuncio");
  * ordena
  */
 
-router.get("/", async (req, res, next) => {
+router.get("/", jwtAuth, async (req, res, next) => {
   try {
     const tags = req.query.tags;
     const venta = req.query.venta;
