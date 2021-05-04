@@ -1,13 +1,21 @@
 //controlador
 
-var express = require("express");
-const { route } = require("..");
+var express = require('express');
+const { route } = require('..');
 var router = express.Router();
+const path = require('path')
+var multer = require('multer');
+const cote = require('cote');
+
+
+const storage = require('../../controllers/multerMiddleware');
+var upload = multer({ storage: storage });
+
+
 //cargar el modelo
 
-const Anuncio = require("../../models/Anuncio");
-const jwtAuth = require("../../lib/jwtAuth")
-
+const Anuncio = require('../../models/Anuncio');
+const jwtAuth = require('../../lib/jwtAuth');
 
 /*
  * GET /api/auncios
@@ -15,7 +23,7 @@ const jwtAuth = require("../../lib/jwtAuth")
  * ordena
  */
 
-router.get("/", jwtAuth, async (req, res, next) => {
+router.get('/', jwtAuth, async (req, res, next) => {
   try {
     const tags = req.query.tags;
     const venta = req.query.venta;
@@ -39,14 +47,14 @@ router.get("/", jwtAuth, async (req, res, next) => {
     }
 
     if (precio) {
-      let posicion = precio.indexOf("-");
+      let posicion = precio.indexOf('-');
       if (posicion === -1) {
         filtro.precio = precio;
       } else if (posicion === 0) {
-        precio = precio.replace("-", "");
+        precio = precio.replace('-', '');
         filtro.precio = { $lte: precio };
       } else if (posicion === precio.length - 1) {
-        precio = precio.replace("-", "");
+        precio = precio.replace('-', '');
         filtro.precio = { $gte: precio };
       } else {
         let min = precio.substr(0, posicion);
@@ -66,29 +74,25 @@ router.get("/", jwtAuth, async (req, res, next) => {
 /**
  * GET /api/anuncios/
  * Listar los tags existentes
- */ 
-
+ */
+exports.list;
 router.get('/tags', async function (req, res, next) {
-
-  
-  const listaTags = await Anuncio.distinct("tags"); 
-   console.log(listaTags)
-      res.status(202).json(listaTags);
-  
+  const listaTags = await Anuncio.distinct('tags');
+  console.log(listaTags);
+  res.status(202).json(listaTags);
 });
-
 
 /*
  *GET /api/anuncios/
  * Listar los anuncios por _id
  */
-router.get("/:id", async (req, res, next) => {
+router.get('/:id', async (req, res, next) => {
   try {
     const _id = req.params.id;
 
     const anuncio = await Anuncio.findOne({ _id: _id });
     if (!anuncio) {
-      return res.status(404).json({ error: "not found" });
+      return res.status(404).json({ error: 'not found' });
     }
     res.json({ result: anuncio });
   } catch (err) {
@@ -98,16 +102,26 @@ router.get("/:id", async (req, res, next) => {
 
 /**
  * //POST /api/anuncios (body)
- * 
+ *
  */
+//
+const solicitud = new cote.request({name: 'solicitud cliente'})
 
-router.post("/", async (req, res, next) => {
+router.post('/', upload.single('foto'), async (req, res, next) => {
   try {
-    const anuncioData = req.body;
-
-    const anuncio = new Anuncio(anuncioData);
+    const { nombre, venta, precio, tags } = req.body;
+    const foto = req.file.filename;
+    const anuncio = new Anuncio({ nombre, venta, precio, foto, tags });
 
     const anuncioCreado = await anuncio.save();
+
+    //configurar parametros requester
+
+    const rutaOrigenImagen = path.join(__dirname, '../../public/images/anuncios',anuncio.foto)
+    const rutaDestinoCambioTamano = path.join(__dirname, '../../public/images/anuncios/thumbnails')
+
+    // Enviar "Eventos / mensajes" al microservicio
+    solicitud.send({type: 'cambiarTamanoFoto', rutaOrigenImagen , rutaDestinoCambioTamano})
     res.status(202).json({ result: anuncioCreado });
   } catch (error) {
     next(error);

@@ -1,46 +1,38 @@
-
 <% include cabecera.html %>
-  <!-- Page Content -->
-  <div class="container">
+<!-- Page Content -->
+<div class="container">
+  <!-- Jumbotron Header -->
+  <header class="jumbotron my-4">
+    <h1 class="display-3"><%= title %></h1>
+    <p class="lead"><%=__('Welcome to ')%><%= title %></p>
+    <!-- <a href="#" class="btn btn-primary btn-lg">Call to action!</a> -->
+  </header>
 
-    <!-- Jumbotron Header -->
-    <header class="jumbotron my-4">
-      <h1 class="display-3"><%= title %></h1>
-      <p class="lead"><%=__('Welcome to ')%><%= title %></p>
-      <!-- <a href="#" class="btn btn-primary btn-lg">Call to action!</a> -->
-    </header>
-
-   
-    <!-- Page Features -->
-    <div class="row text-center">
-      <div>
-       
-      
-      <div class="col-lg-3 col-md-6 mb-4">
-        <% listaAvisos.map(aviso => { %> 
-        <div class="card h-100">
-          <img class="card-img-top" src="/images/anuncios/<%= aviso.foto %>"
-          alt="<%= aviso.foto %>">
-          <div class="card-body">
-            <h4 class="card-title">Card title</h4>
-            <div>
+  <!-- Page Features -->
+  <div class="row text-center">
+    <div class="d-flex flew-row flex-wrap mb-4">
+      <% listaAvisos.map(aviso => { %>
+      <div class="card col-lg-3 col-md-6">
+        <img
+          class="card-img-top"
+          src="/images/anuncios/<%= aviso.foto %>"
+          alt="<%= aviso.foto %>"
+        />
+        <div class="card-body">
+          <h4 class="card-title">Card title</h4>
+          <div>
             <div><%=__('Article')%> : <%= aviso.nombre %></div>
             <div><%=__('Sale')%> : <%= aviso.venta %></div>
             <div><%=__('Price')%> : <%= aviso.precio %></div>
-            <div> <%=__('Photo')%> : <%= aviso.foto %> </div>
-            <div> <%=__('Tags')%> : <%= aviso.tags %></div>
+            <div><%=__('Photo')%> : <%= aviso.foto %></div>
+            <div><%=__('Tags')%> : <%= aviso.tags %></div>
           </div>
-       
-          </div>
-          <% }) %> 
-        
-         
+        </div>
+      </div>
+      <% }) %>
+      <!-- /.row -->
     </div>
-    <!-- /.row -->
-   
-
+    <!-- /.container -->
   </div>
-  </div>
-  <!-- /.container -->
-
-  <% include pie.html %>
+</div>
+<% include pie.html %>
