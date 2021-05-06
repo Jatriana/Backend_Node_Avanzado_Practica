@@ -11,9 +11,9 @@ responder.on('cambiarTamanoFoto', (message, done) => {
   console.log(
     `Service: ${message.rutaOrigenImagen} ${message.rutaDestinoCambioTamano} ${Date.now()}`
   );
+  console.log('******ejecutar convertir imagen '  ,message);
 
   // convertidor de imagen
   cambiarTamanoFoto(message.rutaOrigenImagen, message.rutaDestinoCambioTamano);
-
-  done();
+  done(message.rutaDestinoCambioTamano);
 });
