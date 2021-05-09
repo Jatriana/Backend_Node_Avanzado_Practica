@@ -28,7 +28,7 @@ npm run installDB
 ```
 npm run dev
 ```
-### Arranque de la  aplicación : 
+### Arranque de la  aplicación NODEPOP (primer terminal) : 
 
 ```
 npm start
@@ -36,24 +36,61 @@ npm start
 
 
 ***
+### Arrancar microservicio generador de thumbnail(segunda terminal)
 
+```
+npm run micro
+```
+### Arrancar NODEPOP y microservicio generador de thumbnail con PM2
+
+```
+npx pm2 start
+```
 ### Documentación de uso:
 
 
 Operaciones que debe realizar el API a crear:
-- Lista de anuncios con posibilidad de paginación. Con filtros por tag, tipo de anuncio
+
+- Autenticación, para poder visializar el lista de auncios debe estar autenticado y en la cabecara debe tener un Token valido
+
+- Internacionalización, la aplicacion cuenta con la posiblidad de cambiar idiomo selector (ES EN) en la website.
+
+- Lista de anuncios (bajo Auntenticacion) con posibilidad de paginación debe estar autorizado (token). Con filtros por tag, tipo de anuncio
 (venta o búsqueda), rango de precio (precio min. y precio max.) y nombre de artículo
 
 - Lista de tags existentes
 - Creación de anuncio
+- Subida de imagen con tarea en background
 
 *Para peticiones POST utilizar x-www-form-urlencoded*
 
-### Listar anuncios:
+**Para peticiones POST de subir fichero de foto utilizar form-data
+
+### Autenticación JWT
+POST /api/autenticacion
+
+    PARAMETRO: localhost:3000/api/autenticacion
+
+    se realiza un POST a la url con las KEY /VALUE
+
+      email : admin@example.com
+      password: 1234
+
+    la API nos devuelve un Tokem valido
+      {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCloI6IkpXVCJ9.eyJfaWQiOiI2MDg5MmY5ZTIzZTY1ZDUyODhlOTAwYjEiLCJpYXQiOjE2MjA1NDgwMzEsImV4cCI6MTYyMDU1NTIzMX0.nrl_gtzOGsjNn4ZAv5PfkTJnsWaXXHIZELwGLP1YWME"
+      }
+
+### Listar anuncios con autenticacion JWT:
 
 GET // api/anuncios
 
     PARAMETRO:  http://localhost:3000/api/anuncios
+
+    Headers KEY / VALUE
+
+    Authorization:eyJhbGciOiJIUzI1NiIsInR5cCp6IkpXVCJ9.eyJfaWQiOiI2MDg5MmY5ZTIzZTY1ZDUyODhlOTAwYjEiLCJpYXQiOjE2MjA1NDgwMzEsImV4cCI6MTYyMDU1NTIzMX0.nrl_gtzOGsjNn4ZAv5PfkTJnsWaXXHIZELwGLP1YWME
+
 
 * EJEMPLO DE RESPUESTA:
 
@@ -159,7 +196,9 @@ GET  /apiv/anuncios
 
 * PARÁMETROS :http://localhost:3000/api/anuncios?tags=articulos&sort&precio=100-50000&skip=2
 
+ Headers KEY / VALUE
 
+    Authorization:eyJhbGciOiJIUzI1NiIsInR5cCp6IkpXVCJ9.eyJfaWQiOiI2MDg5MmY5ZTIzZTY1ZDUyODhlOTAwYjEiLCJpYXQiOjE2MjA1NDgwMzEsImV4cCI6MTYyMDU1NTIzMX0.nrl_gtzOGsjNn4ZAv5PfkTJnsWaXXHIZELwGLP1YWME
 	
 
 * EJEMPLO DE RESPUESTA:
@@ -201,6 +240,10 @@ GET  /apiv/anuncios
 GET /api/anuncios/tags
 
   PARAMETRO: http://localhost:3000/api/anuncios/tags
+
+   Headers KEY / VALUE
+
+    Authorization:eyJhbGciOiJIUzI1NiIsInR5cCp6IkpXVCJ9.eyJfaWQiOiI2MDg5MmY5ZTIzZTY1ZDUyODhlOTAwYjEiLCJpYXQiOjE2MjA1NDgwMzEsImV4cCI6MTYyMDU1NTIzMX0.nrl_gtzOGsjNn4ZAv5PfkTJnsWaXXHIZELwGLP1YWME
 
   EJEMPLO DE RESOUESTA
 
@@ -250,12 +293,13 @@ foto : bici.jpg
 tags : lifestyle,motor,articulos
 
 
-### Creacion de Anuncios
+### Creacion de Anuncios con subida de imagen y tarea en background (thumbnails)
 
 
 ```
 POST http://localhost:3000/api/anuncios
 ```
+  form-data
 
 * PARÁMETROS 
 
@@ -288,6 +332,9 @@ POST http://localhost:3000/api/anuncios
     }
 }
 
-#### VISUALIZACION DE FOTOS 
+
+
+
+### VISUALIZACION DE FOTOS 
 
 http://localhost:3000/images/anuncios/bici.jpg
