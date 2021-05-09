@@ -1,2 +1,4 @@
 node_modules
+nodepop\node_modules
+nodepop\.env
 .env
