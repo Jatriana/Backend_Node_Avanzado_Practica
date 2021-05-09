@@ -3,29 +3,29 @@
 var express = require('express');
 const { route } = require('..');
 var router = express.Router();
-const path = require('path')
+const path = require('path');
 var multer = require('multer');
 const cote = require('cote');
 
-
 const storage = require('../../controllers/multerMiddleware');
 var upload = multer({ storage: storage });
-
 
 //cargar el modelo
 
 const Anuncio = require('../../models/Anuncio');
 const jwtAuth = require('../../lib/jwtAuth');
 
-
+const requester = new cote.Requester({
+  name: '//////peticion de  cliente///////',
+});
 
 /*
  * GET /api/auncios
  * metodo de filtar por nombre- ventra -precio(valor , memor igual que, mayor igual que),
- * ordena
+ * ordena ,
  */
 
-router.get('/', jwtAuth, async (req, res, next) => {
+router.get('/',jwtAuth,  async (req, res, next) => {
   try {
     const tags = req.query.tags;
     const venta = req.query.venta;
@@ -107,7 +107,6 @@ router.get('/:id', async (req, res, next) => {
  *
  */
 //
-const responder = new cote.Requester({name: '//////peticion de  cliente'})
 
 router.post('/', upload.single('foto'), async (req, res, next) => {
   try {
@@ -119,20 +118,30 @@ router.post('/', upload.single('foto'), async (req, res, next) => {
 
     //configurar parametros requester
 
-    const rutaOrigenImagen = path.join(__dirname, '../../public/images/anuncios',anuncio.foto)
+    const rutaOrigenImagen = path.join(
+      __dirname,
+      '../../public/images/anuncios',
+      anuncio.foto
+    );
 
-    console.log('**************rutas de origen en el cliente',rutaOrigenImagen);
+    const rutaDestinoCambioTamano = path.join(
+      __dirname,
+      '../../public/images/anuncios/thumbnails',
+      `${anuncio.foto}`
+    );
 
-    const rutaDestinoCambioTamano = path.join(__dirname, '../../public/images/anuncios/thumbnails')
-    
-    console.log('------------------rutas de destino', rutaDestinoCambioTamano);
     // Enviar "Eventos / mensajes" al microservicio
-   const resultado= await requester.send({type: 'cambiarTamanoFoto', rutaOrigenImagen , rutaDestinoCambioTamano})
-   console.log('resultado de cliente de microservicio',resultado);
+    requester.send({
+      type: 'cambiarTamanoFoto',
+      rutaOrigenImagen,
+      rutaDestinoCambioTamano,
+    });
+
     res.status(202).json({ result: anuncioCreado });
   } catch (error) {
     next(error);
   }
 });
+
 
 module.exports = router;
